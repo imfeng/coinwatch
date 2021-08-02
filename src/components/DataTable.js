@@ -21,10 +21,16 @@ const columns = [
      cell: ({p_margin}) => <span class={getPosNegClass(p_margin)}>{(p_margin)}%</span>
    },
    {
-     name: "Volume Margin",
+     name: "Volume Avr Margin",
      selector: "v_margin_avr",
      sortable: true,
      cell: ({v_margin_avr}) => <span class={getPosNegClass(v_margin_avr)}>{(v_margin_avr)}%</span>
+   },
+   {
+     name: "Volume Past Margin",
+     selector: "v_margin_past",
+     sortable: true,
+     cell: ({v_margin_past}) => <span class={getPosNegClass(v_margin_past)}>{(v_margin_past)}%</span>
    }
  ];
 const DataTableComponent = ({data}) => {

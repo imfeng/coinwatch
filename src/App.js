@@ -201,13 +201,13 @@ class App extends Component {
     const data = Object.entries(raw).map(([key, arr]) => {
       const latest = arr.slice(-1)[0];
       const past = arr.slice(-2)[0];
-      const price = point(latest.high);
+      const price = Number(latest.high);
       const p_avr = arr.slice(0, -2).reduce((acc, x) => acc + Number(x.low), 0) / (arr.length - 1);
       const p_margin = getPercentage(p_avr, Number(latest.high));
 
       const v_avr = arr.reduce((acc, x) => acc + Number(x.volume), 0) / arr.length;
-      const v_margin_avr = getPercentage(v_avr, Number(latest.volume));
-      const v_margin_past = getPercentage(v_avr, Number(past.volume));
+      const v_margin_avr = getPercentage(Number(latest.volume), v_avr);
+      const v_margin_past = getPercentage(Number(latest.volume), Number(past.volume));
 
       return {
         pair: key,
@@ -252,7 +252,7 @@ export default App;
 
 function point(num, p = 2) {
   const basedouble = p * p;
-  return parseInt(num * basedouble - basedouble) / basedouble;
+  return parseInt(Number(num) * basedouble - basedouble) / basedouble;
 }
 
 function getPercentage(num, n2) {
