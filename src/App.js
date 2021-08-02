@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Treemap from './components/Treemap';
+import DataTableComponent from './components/DataTable';
 import io from 'socket.io-client';
 import axios from 'axios';
 import update from 'immutability-helper';
@@ -8,9 +9,11 @@ import Spinner from 'react-spinkit';
 import Header from './components/Header';
 import './App.css';
 
+axios.defaults.baseURL = 'http://localhost:3001'
+
 let initialState = {
   isActive: true,
-  selected: { '4h': 'active' },
+  selected: { '5m': 'active' },
   isLive: false,
   socket: null,
   data: {},
@@ -27,8 +30,8 @@ class App extends Component {
       .get('/api/coins', {
       // .get('http://localhost:3231/api/coins', {
         params: {
-          timestamp: '4h',
-          limit: 5
+          timestamp: '5m',
+          limit: 48
         }
       })
       .then(response => {
@@ -45,6 +48,7 @@ class App extends Component {
     // let minDiff = new Date().getTime() - new Date().setHours(0,0,0,0)
     // let mins = Math.floor(minDiff / 60000)
     switch (time) {
+      case '1m': return 48
       case '5m': return 48
       case '15m': return 16
       case '30m': return 8
@@ -193,7 +197,32 @@ class App extends Component {
 
   render() {
     const { isLive, isActive, selected } = this.state;
-    let data = this.getTreemapData();
+    const { data: raw } = this.state;
+    const data = Object.entries(raw).map(([key, arr]) => {
+      const latest = arr.slice(-1)[0];
+      const past = arr.slice(-2)[0];
+      const price = point(latest.high);
+      const p_avr = arr.slice(0, -2).reduce((acc, x) => acc + Number(x.low), 0) / (arr.length - 1);
+      const p_margin = getPercentage(p_avr, Number(latest.high));
+
+      const v_avr = arr.reduce((acc, x) => acc + Number(x.volume), 0) / arr.length;
+      const v_margin_avr = getPercentage(v_avr, Number(latest.volume));
+      const v_margin_past = getPercentage(v_avr, Number(past.volume));
+
+      return {
+        pair: key,
+        // latest,
+        // past,
+        price,
+        p_avr,
+        p_margin,
+        v_avr,
+        v_margin_avr,
+        v_margin_past,
+      }
+    })
+
+    // let data = this.getTreemapData();
     return (
       <div className="App">
         <Header
@@ -203,16 +232,29 @@ class App extends Component {
           handleClick={this.handleClick}
           handleLiveClick={this.handleLiveClick}
         />
-        {data.length > 90 && isActive ? (
+        <div className="tree">
+          <DataTableComponent data={data} />
+        </div>
+        {/* {data.length > 90 && isActive ? (
           <div className="tree">
-            <Treemap data={data} />
+            <DataTableComponent data={data} />
           </div>
         ) : (
           <Spinner fadeIn="none" className="spinner" />
-        )}
+        )} */}
       </div>
     );
   }
 }
 
 export default App;
+
+
+function point(num, p = 2) {
+  const basedouble = p * p;
+  return parseInt(num * basedouble - basedouble) / basedouble;
+}
+
+function getPercentage(num, n2) {
+  return parseInt(num / n2 * 10000 - 10000) / 100;
+}

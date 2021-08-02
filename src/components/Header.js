@@ -7,6 +7,7 @@ const Header = ({
   handleClick,
   handleLiveClick
 }) => {
+  const getSelectState = (key) => selected[key] ? selected[key] : '';
   return (
     <header className="App-header">
       <div className="btn-group" data-toggle="buttons" role="group">
@@ -27,10 +28,19 @@ const Header = ({
         </button>
         <button
           disabled={!isActive}
+          value="1m"
+          onClick={handleClick}
+          type="button"
+          className={`btn btn-secondary ${getSelectState('1m')}`}
+        >
+          1m
+        </button>
+        <button
+          disabled={!isActive}
           value="5m"
           onClick={handleClick}
           type="button"
-          className={`btn btn-secondary ${selected['5m']}`}
+          className={`btn btn-secondary ${getSelectState('5m')}`}
         >
           5m
         </button>
@@ -39,7 +49,7 @@ const Header = ({
           value="15m"
           onClick={handleClick}
           type="button"
-          className={`btn btn-secondary ${selected['15m']}`}
+          className={`btn btn-secondary ${getSelectState('15m')}`}
         >
           15m
         </button>
@@ -48,7 +58,7 @@ const Header = ({
           value="30m"
           onClick={handleClick}
           type="button"
-          className={`btn btn-secondary ${selected['30m']}`}
+          className={`btn btn-secondary ${getSelectState('30m')}`}
         >
           30m
         </button>
@@ -57,7 +67,7 @@ const Header = ({
           value="1h"
           onClick={handleClick}
           type="button"
-          className={`btn btn-secondary ${selected['1h']}`}
+          className={`btn btn-secondary ${getSelectState('1h')}`}
         >
           1H
         </button>
@@ -66,7 +76,7 @@ const Header = ({
           value="4h"
           onClick={handleClick}
           type="button"
-          className={`btn btn-secondary ${selected['4h']}`}
+          className={`btn btn-secondary ${getSelectState('4h')}`}
         >
           4H
         </button>
@@ -75,7 +85,7 @@ const Header = ({
           value="8h"
           onClick={handleClick}
           type="button"
-          className={`btn btn-secondary ${selected['8h']}`}
+          className={`btn btn-secondary ${getSelectState('8h')}`}
         >
           8H
         </button>
@@ -84,7 +94,7 @@ const Header = ({
           value="1d"
           onClick={handleClick}
           type="button"
-          className={`btn btn-secondary ${selected['1d']}`}
+          className={`btn btn-secondary ${getSelectState('1d')}`}
         >
           1D
         </button>
@@ -93,7 +103,7 @@ const Header = ({
           value="1w"
           onClick={handleClick}
           type="button"
-          className={`btn btn-secondary ${selected['1w']}`}
+          className={`btn btn-secondary ${getSelectState('1w')}`}
         >
           1W
         </button>
@@ -102,7 +112,7 @@ const Header = ({
           value="1M"
           onClick={handleClick}
           type="button"
-          className={`btn btn-secondary ${selected['1M']}`}
+          className={`btn btn-secondary ${getSelectState('1M')}`}
         >
           1M
         </button>
