@@ -15,36 +15,38 @@ const columns = [
      sortable: true
    },
    {
-     name: "Prive Margin",
+     name: "Price Margin",
      selector: "p_margin",
      sortable: true,
-     cell: ({p_margin}) => <span class={getPosNegClass(p_margin)}>{(p_margin)}%</span>
+     cell: ({p_margin}) => <span className={getPosNegClass(p_margin)}>{(p_margin)}%</span>
    },
    {
      name: "Volume Avr Margin",
      selector: "v_margin_avr",
      sortable: true,
-     cell: ({v_margin_avr}) => <span class={getPosNegClass(v_margin_avr)}>{(v_margin_avr)}%</span>
+     cell: ({v_margin_avr}) => <span className={getPosNegClass(v_margin_avr)}>{(v_margin_avr)}%</span>
    },
    {
      name: "Volume Past Margin",
      selector: "v_margin_past",
      sortable: true,
-     cell: ({v_margin_past}) => <span class={getPosNegClass(v_margin_past)}>{(v_margin_past)}%</span>
+     cell: ({v_margin_past}) => <span className={getPosNegClass(v_margin_past)}>{(v_margin_past)}%</span>
    }
  ];
 const DataTableComponent = ({data}) => {
     return (
-      //  <pre>{JSON.stringify(data, null, 2)}</pre>
-       <DataTable
-          columns={columns}
-          data={data}
-          noHeader
-          defaultSortField="id"
-          defaultSortAsc={false}
-          pagination
-          highlightOnHover
-        />
+       <div>
+         {/* <pre>{JSON.stringify(data, null, 2)}</pre> */}
+         <DataTable
+            columns={columns}
+            data={data}
+            noHeader
+            defaultSortField="id"
+            defaultSortAsc={false}
+            pagination
+            highlightOnHover
+          />
+       </div>
     );
   };
   

@@ -31,7 +31,7 @@ class App extends Component {
       // .get('http://localhost:3231/api/coins', {
         params: {
           timestamp: '5m',
-          limit: 48
+          limit: 20
         }
       })
       .then(response => {
@@ -49,7 +49,7 @@ class App extends Component {
     // let mins = Math.floor(minDiff / 60000)
     switch (time) {
       case '1m': return 48
-      case '5m': return 48
+      case '5m': return 20
       case '15m': return 16
       case '30m': return 8
       case '1h': return 5
@@ -64,8 +64,8 @@ class App extends Component {
   }
 
   connectSocket = t => {
-    const socket = io('/');
-    // const socket = io('http://localhost:3231/');
+    // const socket = io('/');
+    const socket = io('http://localhost:3001/');
     this.setState({ socket });
     if (typeof t !== 'string') this.setState({ isLive: !this.state.isLive });
 
@@ -88,6 +88,7 @@ class App extends Component {
     });
 
     const interval = Object.keys(this.state.selected)[0];
+    console.log('interval', interval)
 
     axios
       .post('/', {
@@ -202,8 +203,8 @@ class App extends Component {
       const latest = arr.slice(-1)[0];
       const past = arr.slice(-2)[0];
       const price = Number(latest.high);
-      const p_avr = arr.slice(0, -2).reduce((acc, x) => acc + Number(x.low), 0) / (arr.length - 1);
-      const p_margin = getPercentage(p_avr, Number(latest.high));
+      const p_avr = arr.slice(0, -1).reduce((acc, x) => acc + Number(x.low), 0) / (arr.length - 1);
+      const p_margin = getPercentage(Number(latest.close), p_avr);
 
       const v_avr = arr.reduce((acc, x) => acc + Number(x.volume), 0) / arr.length;
       const v_margin_avr = getPercentage(Number(latest.volume), v_avr);
