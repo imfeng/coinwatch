@@ -19,6 +19,7 @@
     "immutability-helper": "^2.8.1",
     "line-notify-sdk": "^1.0.0",
     "lodash": "^4.17.21",
+    "lowdb": "^2.1.0",
     "node-binance-api": "^0.8.7",
     "node-telegram-bot-api": "^0.54.0",
     "nodemon": "^1.18.6",
